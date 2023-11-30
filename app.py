@@ -30,12 +30,12 @@ app.register_blueprint(auth)
 def landing_page():
     return render_template('landing_page.html')
 
-@app.route('/signup')
+@app.route('/sign_up')
 def signup_page():
     """Sign Up Page"""
     return render_template('signup.html')
 
-@app.route('/login')
+@app.route('/log_in')
 def login_page():
     """Log in Page"""
     return render_template('login.html')
