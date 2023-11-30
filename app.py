@@ -26,3 +26,25 @@ from api.auth import auth
 app.register_blueprint(chat)
 app.register_blueprint(auth)
 
+@app.route('/')
+def landing_page():
+    return render_template('landing_page.html')
+
+@app.route('/signup')
+def signup_page():
+    """Sign Up Page"""
+    return render_template('signup.html')
+
+@app.route('/login')
+def login_page():
+    """Log in Page"""
+    return render_template('login.html')
+
+@app.route('/chat')
+def home():
+    """Home Page - generate"""
+    return render_template('generate.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='localhost', port=5000)
