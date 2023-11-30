@@ -31,14 +31,14 @@ app.register_blueprint(save_chat)
 
 @app.route('/')
 def landing_page():
-    return render_template('landing_page.html')
+    return render_template('index.html')
 
-@app.route('/sign_up')
+@app.route('/signup')
 def signup_page():
     """Sign Up Page"""
     return render_template('signup.html')
 
-@app.route('/log_in')
+@app.route('/login')
 def login_page():
     """Log in Page"""
     return render_template('login.html')
@@ -46,7 +46,13 @@ def login_page():
 @app.route('/chat')
 def home():
     """Home Page - generate"""
-    return render_template('generate.html')
+    items = [
+        {'title': 'Nutrition & Diet', 'description': 'What are healthy breakfast options for someone with high cholesterol?'},
+        {'title': 'Item 2', 'description': 'Description for Item 2'},
+        {'title': 'Item 3', 'description': 'Description for Item 3'},
+        {'title': 'Item 4', 'description': 'Description for Item 4'}
+    ]
+    return render_template('generate.html', items=items)
 
 
 if __name__ == '__main__':

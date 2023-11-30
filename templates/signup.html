@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="relative flex flex-col justify-center h-screen overflow-hidden">
+    <div class="w-full p-6 m-auto rounded-md lg:max-w-lg">
+        <h1 class="text-4xl font-normal text-center mb-8">Create your Mura AI account</h1>
+        <form class="space-y-8">
+            <div class="flex flex-col gap-8">
+                <div>
+                    <label class="label">
+                        <span class="text-base label-text">Username</span>
+                    </label>
+                    <input type="text" placeholder="Username" class="w-full input input-bordered input-primary" />
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="text-base label-text">Email Address</span>
+                    </label>
+                    <input type="text" placeholder="Email Address" class="w-full input input-bordered input-primary" />
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="text-base label-text">Create a password</span>
+                    </label>
+                    <input type="password" placeholder="Enter Password"
+                        class="w-full input input-bordered input-primary" />
+                </div>
+            </div>
+
+            <div>
+                <button class="btn btn-primary w-full">Create an account</button>
+                <div class="flex flex-row justify-center text-center gap-2 mt-2">already have an account? <a href="/login" class="text-blue-500">Login</a></div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

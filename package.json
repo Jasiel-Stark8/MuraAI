@@ -1,0 +1,9 @@
+{
+	"scripts": {
+		"dev": "tailwindcss -i ./static/src/main.css -o ./static/dist/css/main.css --watch"
+	},
+	"devDependencies": {
+		"daisyui": "^4.4.16",
+		"tailwindcss": "^3.3.5"
+	}
+}
