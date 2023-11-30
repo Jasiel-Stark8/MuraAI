@@ -19,7 +19,7 @@ db.init_app(app)
 
 migrate = Migrate(app, db)
 
-from models import user
+from models import users
 from api.yi import chat
 from api.auth import auth
 
