@@ -22,9 +22,12 @@ migrate = Migrate(app, db)
 from models import users
 from api.yi import chat
 from api.auth import auth
+from api.save_chat import save_chat
 
-app.register_blueprint(chat)
-app.register_blueprint(auth)
+app.register_blueprint(chat, url_prefix='/api')
+app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(save_chat)
+
 
 @app.route('/')
 def landing_page():

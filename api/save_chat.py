@@ -3,9 +3,9 @@ from flask import Blueprint, request, jsonify
 from models.chat_thread import ChatMessage
 from database import db
 
-save_chat_blueprint = Blueprint('save_chat_message', __name__)
+save_chat = Blueprint('save_chat', __name__)
 
-@save_chat_blueprint.route('/save_chat_message', methods=['POST'], strict_slashes=False)
+@save_chat.route('/save_chat_message', methods=['POST'], strict_slashes=False)
 def save_chat_message():
     """Save chat message to database"""
     try:
