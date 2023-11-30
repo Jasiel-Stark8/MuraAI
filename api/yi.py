@@ -1,24 +1,35 @@
-from flask import Flask, Blueprint
-from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaTokenizer
+"""Mura chat engine"""
+import os
+from flask import Flask, Blueprint, jsonify
+from dotenv import load_dotenv
+import replicate
 
-chat = Blueprint( 'chat', __name__) # I Will add the routing after the model works (I need to install torch before it cna run)
+load_dotenv()
+REPLICATE_API_TOKEN = os.getenv('REPLICATE_API_TOKEN')
+chat = Blueprint( 'chat', __name__)
 
-model_path = '01-ai/Yi-34b-Chat'
 
-tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+@chat.route('/chat')
+def mura_chat():
+    """Define Yi model"""
+    try:
+        output = replicate.run(
+            "01-ai/yi-6b-chat:14efadfaf772f45ee74c14973007cbafab3ccac90169ec96a9fc7a804253535d",
+            input={
+                "top_k": 50,
+                "top_p": 0.8,
+                "prompt": "Hello, how are you adn what do you do?",
+                "temperature": 0.3,
+                "max_new_tokens": 500,
+                "prompt_template": "<|im_start|>system\nYou are a helpful assistant<|im_end|> \
+                                    \n<|im_start|>user\n{prompt}<|im_end|> \
+                                    \n<|im_start|>assistant\n",
+                "repetition_penalty": 1.2
+            }
+        )
 
-model = AutoModelForCausalLM.from_pretrained(
-    model_path,
-    device_map="auto",
-    torch_dtype='auto'
-).eval()
-
-messages = [
-    {"role": "user", "content": "hi"}
-]
-
-input_ids = tokenizer.apply_chat_template(conversation=messages, tokenize=True, add_generation_prompt=True, return_tensors='pt')
-output_ids = model.generate(input_ids.to('cpu'))
-response = tokenizer.decode(output_ids[0][input_ids.shape[1]:], skip_special_tokens=True)
-
-print(response)
+        # Stream response
+        for item in output:
+            print(item, end=' ')
+    except Exception as e:
+        return jsonify(f'Error: {e}')
