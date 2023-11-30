@@ -31,14 +31,14 @@ app.register_blueprint(save_chat)
 
 @app.route('/')
 def landing_page():
-    return render_template('landing_page.html')
+    return render_template('index.html')
 
-@app.route('/sign_up')
+@app.route('/signup')
 def signup_page():
     """Sign Up Page"""
     return render_template('signup.html')
 
-@app.route('/log_in')
+@app.route('/login')
 def login_page():
     """Log in Page"""
     return render_template('login.html')
@@ -46,7 +46,15 @@ def login_page():
 @app.route('/chat')
 def home():
     """Home Page - generate"""
-    return render_template('generate.html')
+    items = [
+        {'title': 'Nutrition & Diet', 'description': 'What are healthy breakfast options for someone with high cholesterol?'},
+        {'title': 'Mental Health', 'description': 'What are the signs of anxiety and how can it be treated?'},
+        {'title': 'Women\'s Health', 'description': 'What are the best exercises during pregnancy?'},
+        {'title': 'Exercise and Fitness', 'description': 'How many steps per day are recommended for maintaining heart health?'},
+        {'title': 'Cancer', 'description': 'How effective is immunotherapy in treating breast cancer?'},
+        {'title': 'Diabetes', 'description': 'What are the differences between Type 1 and Type 2 diabetes?'},
+    ]
+    return render_template('generate.html', items=items)
 
 
 if __name__ == '__main__':

@@ -2,9 +2,17 @@
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
- 
+
 [packages]
 flask = "*"
- 
+flask-cors = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
+python-dotenv = "*"
+psycopg2 = "*"
+flask-socketio = "*"
+replicate = "*"
+validate-email = "*"
+
 [requires]
 python_version = "3.11.6"
