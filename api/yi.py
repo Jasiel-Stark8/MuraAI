@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaTokenizer
 
-app = Blueprint( 'app', __name__)
+chat = Blueprint( 'chat', __name__) # I Will add the routing after the model works (I need to install torch before it cna run)
 
 model_path = '01-ai/Yi-34b-Chat'
 
