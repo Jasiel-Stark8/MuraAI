@@ -1,31 +1,7 @@
-from models.user import User
+from models.users import User
 from app import app, db
 with app.app_context():
     db.create_all()
-    new_user = User(email="example@email.com", password_hash="somehashedpassword", firstname="John", lastname="Doe")
+    new_user = User(email="example@email.com", password_hash="somehashedpassword")
     db.session.add(new_user)
     db.session.commit()
-...
->>>
-
-from models.article import Article
-from app import app, db
-with app.app_context():
-    db.create_all()
-=============================HEROKU BELOW====================================
-from models.user import User
-from app import app
-from database import db
-with app.app_context():
-    db.create_all()
-    new_user = User(email="example@email.com", password_hash="somehashedpassword", firstname="John", lastname="Doe")
-    db.session.add(new_user)
-    db.session.commit()
-...
->>>
-
-from models.article import Article
-from app import app
-from database import db
-with app.app_context():
-    db.create_all()
