@@ -48,9 +48,11 @@ def home():
     """Home Page - generate"""
     items = [
         {'title': 'Nutrition & Diet', 'description': 'What are healthy breakfast options for someone with high cholesterol?'},
-        {'title': 'Item 2', 'description': 'Description for Item 2'},
-        {'title': 'Item 3', 'description': 'Description for Item 3'},
-        {'title': 'Item 4', 'description': 'Description for Item 4'}
+        {'title': 'Mental Health', 'description': 'What are the signs of anxiety and how can it be treated?'},
+        {'title': 'Women\'s Health', 'description': 'What are the best exercises during pregnancy?'},
+        {'title': 'Exercise and Fitness', 'description': 'How many steps per day are recommended for maintaining heart health?'},
+        {'title': 'Cancer', 'description': 'How effective is immunotherapy in treating breast cancer?'},
+        {'title': 'Diabetes', 'description': 'What are the differences between Type 1 and Type 2 diabetes?'},
     ]
     return render_template('generate.html', items=items)
 
