@@ -5,7 +5,7 @@ import datetime
 
 with app.app_context():
     # Inserting a new user
-    new_user = User(email="example@email.com", password_hash="somehashedpassword")
+    new_user = User(email="example@email.com", password_hash="somehashedpassword", username='AGI')
     db.session.add(new_user)
     db.session.commit()
 
