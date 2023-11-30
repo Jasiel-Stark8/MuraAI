@@ -5,3 +5,8 @@ with app.app_context():
     new_user = User(email="example@email.com", password_hash="somehashedpassword")
     db.session.add(new_user)
     db.session.commit()
+
+from models.chat_thread import ChatMessage
+from app import app, db
+with app.app_context():
+    db.create_all()
