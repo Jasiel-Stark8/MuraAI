@@ -4,22 +4,22 @@
 <div class="relative flex flex-col justify-center h-screen overflow-hidden">
     <div class="w-full p-6 m-auto rounded-md lg:max-w-lg">
         <h1 class="text-4xl font-normal text-center mb-8">Sign in to Mura AI</h1>
-        <form class="space-y-8">
+        <form class="space-y-8" action="/auth/login" method="POST">
             <div class="flex flex-col gap-8">
                 <div>
                     <label class="label">
                         <span class="text-base label-text">Email Address</span>
                     </label>
-                    <input type="text" placeholder="Email Address" class="w-full input input-bordered input-primary" />
+                    <input type="text" placeholder="Email Address" name="email" class="w-full input input-bordered input-primary" required/>
                 </div>
                 <div>
                     <label class="label">
-                        <span class="text-base label-text">Create a password</span>
+                        <span class="text-base label-text">Enter your password</span>
                     </label>
-                    <input type="password" placeholder="Enter Password"
-                        class="w-full input input-bordered input-primary" />
+                    <input type="password" placeholder="Enter Password" name="password"
+                        class="w-full input input-bordered input-primary" required/>
                     <div class="w-full text-end mt-2">
-                        <a href="#" class="text-xs text-gray-600 hover:underline hover:text-blue-600">Forget
+                        <a href="#" class="text-xs text-gray-600 hover:underline hover:text-blue-600">Forgot
                             Password?</a>
 
                     </div>
@@ -27,8 +27,8 @@
             </div>
 
             <div>
-                <button class="btn btn-primary w-full">Login</button>
-                <div class="flex flex-row justify-center text-center gap-2 mt-2">Dont have an account? <a href="/signup"
+                <button class="btn btn-primary w-full" type="submit">Login</button>
+                <div class="flex flex-row justify-center text-center gap-2 mt-2">Dont have an account? <a href="{{ url_for('signup_page') }}"
                         class="text-blue-500">Create account</a></div>
             </div>
 

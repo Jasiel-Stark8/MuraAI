@@ -14,7 +14,10 @@ from database import db
 # BLUEPRINT
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-
+messages = [
+    'Account created successfully. Redirecting to login.',
+    
+]
 
 def is_authenticated():
     """Check if user is authenticated"""
@@ -39,20 +42,24 @@ def signup():
             return jsonify({'message': 'Invalid Credentials', 'status': 'error'})
 
         password_hash = generate_password_hash(request.form.get('password'))
+        username = request.form.get('username')
 
         existing_user = db.session.query(User).filter_by(email=email).first()
         try:
             if existing_user:
-                return jsonify({'message': 'An account with this email already exists. Try logging in?', 'status': 'error'})
+                signup_message = 'An account with this email already exists. Try logging in?'
+                return signup_message
             elif not email or not password_hash:
                 return jsonify({'message': 'Missing credentials.', 'status': 'error'})
             else:
                 new_user = User(email=email,
-                                password_hash=password_hash)
+                                password_hash=password_hash,
+                                username=username)
 
                 db.session.add(new_user)
                 db.session.commit()
-                return jsonify({'message': 'Account created successfully. Redirecting to login.', 'status': 'success'})
+                flash(messages[0])
+                return render_template('login.html')
         except Exception as e:
             print(f"Exception: {e}")
             db.session.rollback()
@@ -74,7 +81,7 @@ def login():
             return jsonify({'message': 'Incorrect password. Please try again!', 'status': 'error'})
         else:
             session['user_id'] = user.id
-            return jsonify({'message': f'Welcome {user.firstname}', 'status': 'success'})
+            return jsonify({'message': f'Welcome {user.username}', 'status': 'success'})
     return render_template('login.html')
 
 
