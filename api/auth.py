@@ -80,10 +80,11 @@ def login():
         if not user:
             message = 'Oops, Looks like you do not have an account. Kindly create one.'
             flash(message)
+            return render_template('login.html')
         elif not check_password_hash(user.password_hash, password):
             incorrect_password = 'Incorrect password. Please try again!'
             flash(incorrect_password)
-            return redirect(url_for('auth.login'))
+            return render_template('login.html')
         else:
             session['user_id'] = user.id
             login_success = f'Welcome {user.username}'
