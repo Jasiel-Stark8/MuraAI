@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="h-full">
+<html lang="en" data-theme="light" class="h-full scroll-smooth focus:scroll-auto">
 
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 <body class="h-full">
     {% block content %}{% endblock %}
 
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.5.0/dist/alpine.min.js"></script>
     <script src="{{url_for('static',filename='js/script.js')}}"></script>
 </body>
 
