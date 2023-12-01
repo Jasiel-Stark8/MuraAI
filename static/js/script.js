@@ -48,10 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (isNew) {
-    messageDiv.className = `mb-2 flex flex-col w-full gap-6`;
+      messageDiv.className = `mb-2 flex flex-col w-full gap-6`;
       messageDiv.innerHTML = `
             <div class="flex flex-row gap-4 items-center">
-                <img class="bg-primary rounded-full w-8 h-8 p-2" src="/static/image/logo_small.png" alt="">
+                <img class="bg-primary rounded-full w-8 h-8 p-2" src="/static/images/logo_small.png" alt="">
                 <span>Mura AI</span>
             </div>
             <p id="${lastId}">${text}</p>
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     messageDiv.className = "mb-2 text-right";
     messageDiv.innerHTML = `
         <div class="flex flex-row gap-4 items-center">
-                <img class="bg-neutral-content rounded-full w-8 h-8 p-2" src="/static/image/user.png" alt="">
+                <img class="bg-neutral-content rounded-full w-8 h-8 p-2" src="/static/images/user.png" alt="">
                 <span>You</span>
             </div>
             <p>${messageInput.value}</p>
