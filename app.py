@@ -34,6 +34,11 @@ app.register_blueprint(save_chat)
 def landing_page():
     return render_template('index.html')
 
+
+@app.route('/settings')
+def settings():
+    return render_template('index.html')
+
 @app.route('/signup')
 def signup_page():
     """Sign Up Page"""
