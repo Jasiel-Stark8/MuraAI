@@ -13,9 +13,9 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mura:aZCgqEKLKI1o51tePRmQQTGdCqapkiHh@dpg-clkd6a6rem5c73aguvcg-a.ohio-postgres.render.com/mura'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mura:aZCgqEKLKI1o51tePRmQQTGdCqapkiHh@dpg-clkd6a6rem5c73aguvcg-a/mura'
 # postgresql://mura:mura@localhost:5432/mura
-# postgresql://mura:aZCgqEKLKI1o51tePRmQQTGdCqapkiHh@dpg-clkd6a6rem5c73aguvcg-a/mura
+
 db.init_app(app)
 
 migrate = Migrate(app, db)
@@ -64,4 +64,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
