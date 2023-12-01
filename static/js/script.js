@@ -1,80 +1,160 @@
-const state = {
-  lastId: null,
-};
+function chatBot() {
+  return {
+    botTyping: false,
+    messages: [],
+    lastIdx: null,
+    output: function (input) {
+      let text = input.trim();
+      // Add user message
+      this.messages.push({
+        from: "user",
+        text: text,
+      });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const chatMessages = document.getElementById("chat-messages");
-  const messageInput = document.getElementById("message-input");
-  const sendBtn = document.getElementById("send-btn");
-  const introSection = document.getElementById("intro-section");
-
-  sendBtn.addEventListener("click", async () => {
-    questionInput = messageInput.value;
-    introSection.style.display = "none";
-    appendUserMessage();
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt: questionInput }),
-    });
-    const reader = response.body.getReader();
-    reader.read().then(function pump({ done, value }) {
-      console.log({ done, value });
-      if (done) {
-        state.lastId = null;
-        return;
+      this.scrollChat();
+      this.botTyping = true;
+      this.sendPromptRequest(
+        input,
+        (response) => {
+          if (response != null) {
+            let lastId = this.lastIdx;
+            if (lastId === null) {
+              const newidx = this.messages.push({
+                from: "bot",
+                text: response,
+              });
+              this.lastIdx = newidx - 1;
+            } else {
+              this.messages[
+                lastId
+              ].text = `${this.messages[lastId].text} ${response}`;
+            }
+            this.botTyping = false;
+          } else {
+            this.lastIdx = null;
+          }
+        },
+        (error) => {
+          this.lastIdx = null;
+        }
+      );
+    },
+    compare: function (promptsArray, repliesArray, string) {
+      let reply;
+      let replyFound = false;
+      for (let x = 0; x < promptsArray.length; x++) {
+        for (let y = 0; y < promptsArray[x].length; y++) {
+          if (promptsArray[x][y] === string) {
+            let replies = repliesArray[x];
+            reply = replies[Math.floor(Math.random() * replies.length)];
+            replyFound = true;
+            // Stop inner loop when input value matches this.prompts
+            break;
+          }
+        }
+        if (replyFound) {
+          // Stop outer loop when reply is found instead of interating through the entire array
+          break;
+        }
       }
-      if (value != null) {
-        var string = new TextDecoder().decode(value);
-        appendBotMessage(string, done);
+      if (!reply) {
+        for (let x = 0; x < promptsArray.length; x++) {
+          for (let y = 0; y < promptsArray[x].length; y++) {
+            if (this.levenshtein(promptsArray[x][y], string) >= 0.75) {
+              let replies = repliesArray[x];
+              reply = replies[Math.floor(Math.random() * replies.length)];
+              replyFound = true;
+              // Stop inner loop when input value matches this.prompts
+              break;
+            }
+          }
+          if (replyFound) {
+            // Stop outer loop when reply is found instead of interating through the entire array
+            break;
+          }
+        }
       }
-      return reader.read().then(pump);
-    });
-  });
+      return reply;
+    },
+    levenshtein: function (s1, s2) {
+      var longer = s1;
+      var shorter = s2;
+      if (s1.length < s2.length) {
+        longer = s2;
+        shorter = s1;
+      }
+      var longerLength = longer.length;
+      if (longerLength == 0) {
+        return 1.0;
+      }
+      return (
+        (longerLength - this.editDistance(longer, shorter)) /
+        parseFloat(longerLength)
+      );
+    },
+    editDistance: function (s1, s2) {
+      s1 = s1.toLowerCase();
+      s2 = s2.toLowerCase();
 
-  function appendBotMessage(text) {
-    let messageDiv;
-    let lastId;
-    let isNew = false;
-    if (state.lastId === null) {
-      state.lastId = Math.random().toString(36).substring(7);
-      messageDiv = document.createElement("div");
-      lastId = state.lastId;
-      isNew = true;
-    } else {
-      messageDiv = document.getElementById(state.lastId);
-    }
-
-    if (isNew) {
-      messageDiv.className = `mb-2 flex flex-col w-full gap-6`;
-      messageDiv.innerHTML = `
-            <div class="flex flex-row gap-4 items-center">
-                <img class="bg-primary rounded-full w-8 h-8 p-2" src="/static/images/logo_small.png" alt="">
-                <span>Mura AI</span>
-            </div>
-            <p id="${lastId}">${text}</p>
-      `;
-      chatMessages.appendChild(messageDiv);
-    } else {
-      messageDiv.textContent = `${messageDiv.textContent} ${text}`;
-    }
-    // Scroll to the bottom to always show the latest message
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function appendUserMessage() {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "mb-2 text-right";
-    messageDiv.innerHTML = `
-        <div class="flex flex-row gap-4 items-center">
-                <img class="bg-neutral-content rounded-full w-8 h-8 p-2" src="/static/images/user.png" alt="">
-                <span>You</span>
-            </div>
-            <p>${messageInput.value}</p>
-    `;
-    messageInput.value = "";
-    chatMessages.appendChild(messageDiv);
-  }
-});
+      var costs = new Array();
+      for (var i = 0; i <= s1.length; i++) {
+        var lastValue = i;
+        for (var j = 0; j <= s2.length; j++) {
+          if (i == 0) costs[j] = j;
+          else {
+            if (j > 0) {
+              var newValue = costs[j - 1];
+              if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                newValue =
+                  Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+              costs[j - 1] = lastValue;
+              lastValue = newValue;
+            }
+          }
+        }
+        if (i > 0) costs[s2.length] = lastValue;
+      }
+      return costs[s2.length];
+    },
+    sendPromptRequest: async function (prompt, onType, onError) {
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: prompt }),
+        });
+        const reader = response.body.getReader();
+        reader.read().then(function pump({ done, value }) {
+          if (done) {
+            onType(null);
+            return;
+          }
+          if (value != null) {
+            var string = new TextDecoder().decode(value);
+            onType(string);
+          }
+          return reader.read().then(pump);
+        });
+      } catch (error) {
+        onError(error);
+      }
+    },
+    scrollChat: function () {
+      const messagesContainer = document.getElementById("messages");
+      messagesContainer.scrollTop =
+        messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      setTimeout(() => {
+        messagesContainer.scrollTop =
+          messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      }, 100);
+    },
+    updateChat: function (target) {
+      if (target.value.trim()) {
+        this.output(target.value.trim());
+        target.value = "";
+      }
+    },
+  };
+}

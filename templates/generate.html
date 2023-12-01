@@ -1,61 +1,110 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="drawer lg:drawer-open">
+<div class="drawer lg:drawer-open bg-primary-content h-full">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content flex flex-col h-full justify-center">
-        <div class="flex flex-col h-full w-full container m-auto">
-            <div class="flex-1 w-full py-8">
-                <div class="flex w-full" id="intro-section">
-                    <div class="w-full">
-                        <div class="flex flex-col justify-center items-center gap-4 mb-6">
-                            <img src="/static/images/Vector.png" alt="">
-                            <h2 class="text-xl">Ask Mura your health-related questions 😊</h2>
-                        </div>
-                        <div class="flex flex-row flex-wrap justify-between gap-6">
-                            {% for item in items %}
-                            <div class="flex flex-col gap-2 card w-96 bg-base-100 shadow-xl">
-                                <div class="card-body">
-                                    <h2 class="card-title">{{ item['title'] }}</h2>
-                                    <p>{{ item['description'] }}</p>
+    <div class="drawer-content flex flex-col h-full justify-center bg-primary-content">
+        <div x-data="chatBot()" class="bg-base-100">
+            <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen border-[20px] border-primary-content">
+                <div id="messages"
+                    class="rounded-2xl overflow-y-scroll h-full scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+                    <div class="container m-auto">
+                        <div class="flex flex-col space-y-4 p-3  w-full h-full" x-show="messages.length > 0">
+                            <template x-for="(message, key) in messages">
+                                <div>
+                                    <div class="mb-2 flex flex-col w-full gap-6">
+                                        <div class="flex flex-row gap-4 items-center">
+                                            <img class="rounded-full w-12 h-12 p-2"
+                                                :class="message.from=='bot'?'bg-primary':'bg-neutral-content'"
+                                                :src="message.from=='bot'?'/static/images/logo_small.png':'/static/images/user.png'"
+                                                alt="">
+                                            <span x-html="message.from=='bot'?'Mura AI':'You'"
+                                                class="text-2xl font-normal"></span>
+                                        </div>
+                                        <p x-html="message.text" class="text-xl font-[300]"></p>
+                                    </div>
+                                </div>
+                            </template>
+                            <div x-show="botTyping" style="display: none;">
+                                <div class="flex items-end">
+                                    <div class="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
+                                        <div><img
+                                                src="https://support.signal.org/hc/article_attachments/360016877511/typing-animation-3x.gif"
+                                                alt="..." class="w-16 ml-6"></div>
+                                    </div>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
-                        <div class="flex flex-row w-full py-8 gap-4">
-                            <div class="flex flex-col gap-6 w-2/3">
-                                <div class="p-4 bg-primary text-primary-content rounded-lg">
-                                    <h1 class="text-xl mb-2">Symptom Checker</h1>
-                                    <p>Input symptoms and receive insights on possible conditions.</p>
+
+                        <div class="flex w-full h-full" x-show="messages.length === 0">
+                            <div class="w-full">
+                                <div class="mt-6">
+                                    <h1 class="text-5xl font-bold">Hello, AGI 👋🏽</h1>
                                 </div>
-                                <div class="p-4 bg-primary text-primary-content rounded-lg">
-                                    <h1 class="text-xl mb-2">Mental Wellness Support</h1>
-                                    <p>Easy-to-follow mental health exercises and stress-relief tips</p>
+                                <div class="flex flex-col justify-center items-center gap-4 mb-8">
+                                    <img src="/static/images/Vector.png" alt="">
+                                    <h2 class="text-2xl font-medium">Ask Mura your health-related questions 😊</h2>
                                 </div>
-                            </div>
-                            <div class="p-4 bg-primary text-primary-content rounded-lg w-1/3">
-                                <h1 class="text-xl mb-2">Daily Tips</h1>
-                                <p>Customize your daily nuggets of wellness advice with personalized notifications and
-                                    timely reminders.</p>
+                                <div class="flex flex-row flex-wrap justify-between gap-6">
+                                    {% for item in items %}
+                                    <div class="flex flex-col gap-2 card w-96 bg-base-100 shadow-xl">
+                                        <div class="card-body">
+                                            <h2 class="card-title">{{ item['title'] }}</h2>
+                                            <p>{{ item['description'] }}</p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="flex flex-row w-full py-8 gap-4">
+                                    <div class="flex flex-col gap-6 w-2/3">
+                                        <div class="p-4 bg-primary text-primary-content rounded-lg">
+                                            <h1 class="text-xl mb-2">Symptom Checker</h1>
+                                            <p>Input symptoms and receive insights on possible conditions.</p>
+                                        </div>
+                                        <div class="p-4 bg-primary text-primary-content rounded-lg">
+                                            <h1 class="text-xl mb-2">Mental Wellness Support</h1>
+                                            <p>Easy-to-follow mental health exercises and stress-relief tips</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-primary text-primary-content rounded-lg w-1/3">
+                                        <h1 class="text-xl mb-2">Daily Tips</h1>
+                                        <p>Customize your daily nuggets of wellness advice with personalized
+                                            notifications
+                                            and
+                                            timely reminders.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="chat-messages" class="mb-4 h-full overflow-y-scroll"></div>
-            </div>
-            <div class="flex flex-col gap-4 my-8 px-8 w-full justify-center items-center">
-                <div class="flex items-center w-full">
-                    <input id="message-input" type="text" placeholder="Type here" class="flex-1 p-2 border rounded-l input input-bordered" />
-                    <button id="send-btn" class="p-2 bg-blue-500 text-white rounded-r">Send</button>
 
                 </div>
-                <p>MuraAI can make mistakes, kindly cross check important information.</p>
+
+                <div class="px-4 pt-4 mb-2 sm:mb-0">
+                    <div class="container m-auto">
+                        <div class="relative flex">
+                            <input type="text" placeholder="Say something..." autocomplete="off" autofocus="true"
+                                @keydown.enter="updateChat($event.target)"
+                                class="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-blue-500 rounded-full py-2"
+                                x-ref="input" />
+                            <div class="absolute right-2 items-center inset-y-0 hidden sm:flex">
+                                <button type="button"
+                                    class="inline-flex items-center justify-center rounded-full h-8 w-8 transition duration-200 ease-in-out text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                                    @click.prevent="updateChat($refs.input)">
+                                    <i class="mdi mdi-arrow-right text-xl leading-none"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="w-full text-center mt-4">MuraAI can make mistakes, kindly cross check important
+                            information.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="drawer-side">
         <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-        <ul class="menu menu-lg bg-base-200 rounded-box p-4 w-80 min-h-full text-base-content">
+        <ul class="menu menu-lg bg-primary-content rounded-box p-4 w-80 min-h-full text-primary-content">
             <div class="flex flex-row gap-2 items-center p-2 mb-6">
                 <img src="/static/images/Vector.png" alt="">
                 <span class="font-bold text-3xl">Mura AI</span>
@@ -98,6 +147,16 @@
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     Settings
+                </a>
+            </li>
+            <li class="mt-8">
+                <a>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Sign out
                 </a>
             </li>
         </ul>
