@@ -15,7 +15,6 @@ from database import db
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-
 def is_authenticated():
     """Check if user is authenticated"""
     return 'user_id' in session
@@ -74,7 +73,7 @@ def login():
             return jsonify({'message': 'Incorrect password. Please try again!', 'status': 'error'})
         else:
             session['user_id'] = user.id
-            return jsonify({'message': f'Welcome {user.firstname}', 'status': 'success'})
+            return redirect(url_for('chat'))
     return render_template('login.html')
 
 
