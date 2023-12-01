@@ -3,6 +3,7 @@ function chatBot() {
     botTyping: false,
     messages: [],
     lastIdx: null,
+    sessionId: null,
     output: function (input) {
       let text = input.trim();
       // Add user message
@@ -42,13 +43,21 @@ function chatBot() {
     },
     sendPromptRequest: async function (prompt, onType, onError) {
       try {
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        if (this.sessionId) {
+          headers["Session-Id"] = this.sessionId;
+        }
         const response = await fetch("/api/chat", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: headers,
           body: JSON.stringify({ prompt: prompt }),
         });
+        const newSessionId = response.headers.get("Session-Id");
+        if (newSessionId) {
+          this.sessionId = newSessionId;
+        }
         const reader = response.body.getReader();
         reader.read().then(function pump({ done, value }) {
           if (done) {
@@ -78,6 +87,13 @@ function chatBot() {
       if (target.value.trim()) {
         this.output(target.value.trim());
         target.value = "";
+      }
+    },
+    usePreDefined: function (target) {
+      const cardElement = target.closest(".predef-content");
+
+      if (cardElement) {
+        this.output(cardElement.querySelector("p").textContent);
       }
     },
   };
