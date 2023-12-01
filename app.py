@@ -64,4 +64,8 @@ def home():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     app.run(debug=True, host='localhost', port=5000)
+=======
+    app.run(debug=True)
+>>>>>>> c2886fe (Landing page & Login Redirect)

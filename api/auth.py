@@ -87,8 +87,6 @@ def login():
             return render_template('login.html')
         else:
             session['user_id'] = user.id
-            login_success = f'Welcome {user.username}'
-            flash(login_success)
             return redirect(url_for('home'))
     return render_template('login.html')
 
