@@ -80,5 +80,12 @@ function chatBot() {
         target.value = "";
       }
     },
+    usePreDefined: function (target) {
+      const cardElement = target.closest(".predef-content");
+
+      if (cardElement) {
+        this.output(cardElement.querySelector("p").textContent);
+      }
+    },
   };
 }
