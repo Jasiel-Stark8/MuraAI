@@ -14,10 +14,6 @@ from database import db
 # BLUEPRINT
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-messages = [
-    'Account created successfully. Redirecting to login.',
-    
-]
 
 def is_authenticated():
     """Check if user is authenticated"""
@@ -39,7 +35,8 @@ def signup():
         email = request.form.get('email')
 
         if not validate_email(email, check_mx=False):
-            return jsonify({'message': 'Invalid Credentials', 'status': 'error'})
+            invalid_credential = 'Invalid Credentials'
+            flash(invalid_credential)
 
         password_hash = generate_password_hash(request.form.get('password'))
         username = request.form.get('username')
@@ -50,7 +47,9 @@ def signup():
                 signup_message = 'An account with this email already exists. Try logging in?'
                 return signup_message
             elif not email or not password_hash:
-                return jsonify({'message': 'Missing credentials.', 'status': 'error'})
+                credential_error = 'Missing credentials.'
+                flash(credential_error)
+                
             else:
                 new_user = User(email=email,
                                 password_hash=password_hash,
@@ -58,12 +57,15 @@ def signup():
 
                 db.session.add(new_user)
                 db.session.commit()
-                flash(messages[0])
+                login_success = 'Account created successfully. Redirecting to login.'
+                flash(login_success)
                 return render_template('login.html')
         except Exception as e:
             print(f"Exception: {e}")
             db.session.rollback()
-            return jsonify({'message': 'There was a problem creating your account. Try again.', 'status': 'error'})
+            internal_error = 'There was a problem creating your account. Try again.'
+            flash(internal_error)
+            return redirect('/signup')
 
 
 @auth.route('/login', methods=['GET', 'POST'], strict_slashes=False)
@@ -76,13 +78,18 @@ def login():
         user = db.session.query(User).filter_by(email=email).first()
 
         if not user:
-            return jsonify({'message': 'Oops, Looks like you do not have an account. Kindly create one.', 'status': 'error'})
+            message = 'Oops, Looks like you do not have an account. Kindly create one.'
+            flash(message)
+            return render_template('login.html')
         elif not check_password_hash(user.password_hash, password):
-            return jsonify({'message': 'Incorrect password. Please try again!', 'status': 'error'})
+            incorrect_password = 'Incorrect password. Please try again!'
+            flash(incorrect_password)
+            return render_template('login.html')
         else:
             session['user_id'] = user.id
-            return jsonify({'message': f'Welcome {user.username}', 'status': 'success'})
-    return render_template('login.html')
+            login_success = f'Welcome {user.username}'
+            flash(login_success)
+            return render_template('generate.html')
 
 
 @auth.route('/logout', methods=['GET', 'POST'], strict_slashes=False)
