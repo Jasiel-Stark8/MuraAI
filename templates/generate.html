@@ -1,166 +1,249 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="drawer lg:drawer-open bg-primary-content h-full">
-    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content flex flex-col h-full justify-center bg-primary-content">
-        <div x-data="chatBot()" class="bg-base-100">
-            <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen border-[20px] border-primary-content">
-                <div id="messages"
-                    class="rounded-2xl overflow-y-scroll h-full scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-                    <div class="container m-auto">
-                        <div class="flex flex-col space-y-4 p-3  w-full h-full" x-show="messages.length > 0">
-                            <template x-for="(message, key) in messages">
-                                <div>
-                                    <div class="mb-2 flex flex-col w-full gap-6">
-                                        <div class="flex flex-row gap-4 items-center">
-                                            <img class="rounded-full w-12 h-12 p-2"
-                                                :class="message.from=='bot'?'bg-primary':'bg-neutral-content'"
-                                                :src="message.from=='bot'?'/static/images/logo_small.png':'/static/images/user.png'"
-                                                alt="">
-                                            <span x-html="message.from=='bot'?'Mura AI':'You'"
-                                                class="text-2xl font-normal"></span>
-                                        </div>
-                                        <p x-html="message.text" class="text-xl font-[300]"></p>
-                                    </div>
+<div class="relative z-0 flex h-full w-full overflow-hidden" x-data="chatBot()">
+    <div class="hidden md:flex flex-shrink-0 overflow-x-hidden bg-primary-content text-base-content" style="width: 260px;">
+        <div class="h-full w-[260px]">
+            <div class="flex h-full min-h-0 flex-col">
+                <div class="flex h-full min-h-0 flex-col transition-opacity opacity-100">
+                    <div class="scrollbar-trigger relative h-full w-full flex-1 items-start border-white/20">
+
+                        <nav class="flex h-full w-full flex-col px-3 pb-3.5">
+                            <div class="flex-col flex-1 transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
+                                <div class="pt-3.5">
+                                    <div class="pb-0.5 last:pb-0" tabindex="0"><a
+                                            class="group flex items-center gap-2 rounded-lg px-2 font-medium hover:bg-token-surface-primary"
+                                            href="/">
+                                            <div class="flex flex-row gap-2 items-center p-2 mb-6">
+                                                <img src="/static/images/Vector.png" alt="">
+                                                <span class="font-bold text-3xl">Mura AI</span>
+                                            </div>
+                                        </a></div>
                                 </div>
-                            </template>
-                            <div x-show="botTyping" style="display: none;">
-                                <div class="flex items-end">
-                                    <div class="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
-                                        <div><img
-                                                src="https://support.signal.org/hc/article_attachments/360016877511/typing-animation-3x.gif"
-                                                alt="..." class="w-16 ml-6"></div>
+                                <div class="flex flex-col gap-2 pb-2  text-base-content text-sm">
+                                    <div>
+                                        <ul class="menu menu-lg  w-80 min-h-full  text-base-content">
+
+                                            <li>
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                                    </svg>
+                                                    Home
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    History
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                                    </svg>
+                                                    FAQs
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                                    </svg>
+                                                    Settings
+                                                </a>
+                                            </li>
+
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="flex w-full h-full" x-show="messages.length === 0">
-                            <div class="w-full">
-                                <div class="mt-6">
-                                    <h1 class="text-5xl font-bold">Hello, AGI 👋🏽</h1>
-                                </div>
-                                <div class="flex flex-col justify-center items-center gap-4 mb-8">
-                                    <img src="/static/images/Vector.png" alt="">
-                                    <h2 class="text-2xl font-medium">Ask Mura your health-related questions 😊</h2>
-                                </div>
-                                <div class="flex flex-row flex-wrap justify-between gap-6">
-                                    {% for item in items %}
-                                    <div class="flex flex-col gap-2 card w-96 bg-base-100 shadow-xl">
-                                        <div class="card-body">
-                                            <h2 class="card-title">{{ item['title'] }}</h2>
-                                            <p>{{ item['description'] }}</p>
+                            <div class="flex flex-col pt-2 empty:hidden dark:border-white/20">
+                                <div class="flex w-full items-center">
+                                    <div class="grow">
+                                        <div class="group relative menu menu-lg  w-80 min-h-full  text-base-content"
+                                            data-headlessui-state="">
+                                            <li class="">
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                                    </svg>
+                                                    Sign out
+                                                </a>
+                                            </li>
                                         </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                <div class="flex flex-row w-full py-8 gap-4">
-                                    <div class="flex flex-col gap-6 w-2/3">
-                                        <div class="p-4 bg-primary text-primary-content rounded-lg">
-                                            <h1 class="text-xl mb-2">Symptom Checker</h1>
-                                            <p>Input symptoms and receive insights on possible conditions.</p>
-                                        </div>
-                                        <div class="p-4 bg-primary text-primary-content rounded-lg">
-                                            <h1 class="text-xl mb-2">Mental Wellness Support</h1>
-                                            <p>Easy-to-follow mental health exercises and stress-relief tips</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-4 bg-primary text-primary-content rounded-lg w-1/3">
-                                        <h1 class="text-xl mb-2">Daily Tips</h1>
-                                        <p>Customize your daily nuggets of wellness advice with personalized
-                                            notifications
-                                            and
-                                            timely reminders.</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="px-4 pt-4 mb-2 sm:mb-0">
-                    <div class="container m-auto">
-                        <div class="relative flex">
-                            <input type="text" placeholder="Say something..." autocomplete="off" autofocus="true"
-                                @keydown.enter="updateChat($event.target)"
-                                class="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-blue-500 rounded-full py-2"
-                                x-ref="input" />
-                            <div class="absolute right-2 items-center inset-y-0 hidden sm:flex">
-                                <button type="button"
-                                    class="inline-flex items-center justify-center rounded-full h-8 w-8 transition duration-200 ease-in-out text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                                    @click.prevent="updateChat($refs.input)">
-                                    <i class="mdi mdi-arrow-right text-xl leading-none"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <p class="w-full text-center mt-4">MuraAI can make mistakes, kindly cross check important
-                            information.</p>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="drawer-side">
-        <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-        <ul class="menu menu-lg bg-primary-content rounded-box p-4 w-80 min-h-full text-primary-content">
-            <div class="flex flex-row gap-2 items-center p-2 mb-6">
-                <img src="/static/images/Vector.png" alt="">
-                <span class="font-bold text-3xl">Mura AI</span>
-            </div>
-            <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    Home
-                </a>
-            </li>
-            <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    History
-                </a>
-            </li>
-            <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    FAQs
-                </a>
-            </li>
-            <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    Settings
-                </a>
-            </li>
-            <li class="mt-8">
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    Sign out
-                </a>
-            </li>
-        </ul>
+    <div class="relative flex h-full max-w-full flex-1 flex-col overflow-hidden bg-primary-content md:pr-4">
+        <main class="relative h-full w-full flex-1 overflow-auto transition-width bg-base-100 md:my-4 rounded-lg">
+            <div role="presentation" class="flex h-full flex-col">
+                <div id="messagesContainer" class="flex-1 overflow-hidden overflow-y-scroll">
+                    <div class="h-full">
+                        <div class="react-scroll-to-bottom--css-nrcee-1n7m0yu">
+                            <div class="flex flex-col pb-9 text-sm">
+                                <div class="w-full text-token-text-primary" data-testid="conversation-turn-3">
+                                    <div class="px-4 py-2 justify-center text-base md:gap-6 m-auto">
+                                        <div class="">
+                                            <div id="messages"
+                                                class="rounded-2xl overflow-y-scroll h-full scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+                                                <div class="container m-auto">
+                                                    <div class="flex flex-col space-y-4 p-3  w-full h-full"
+                                                        x-show="messages.length > 0">
+                                                        <template x-for="(message, key) in messages">
+                                                            <div>
+                                                                <div class="mb-2 flex flex-col w-full gap-6">
+                                                                    <div class="flex flex-row gap-4 items-center">
+                                                                        <img class="rounded-full w-12 h-12 p-2"
+                                                                            :class="message.from=='bot'?'bg-primary':'bg-neutral-content'"
+                                                                            :src="message.from=='bot'?'/static/images/logo_small.png':'/static/images/user.png'"
+                                                                            alt="">
+                                                                        <span
+                                                                            x-html="message.from=='bot'?'Mura AI':'You'"
+                                                                            class="text-2xl font-normal"></span>
+                                                                    </div>
+                                                                    <p x-html="message.text" class="text-xl font-[300]">
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                        <div x-show="botTyping" style="display: none;">
+                                                            <div class="flex items-end">
+                                                                <div
+                                                                    class="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
+                                                                    <div><img
+                                                                            src="https://support.signal.org/hc/article_attachments/360016877511/typing-animation-3x.gif"
+                                                                            alt="..." class="w-16 ml-6"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="flex w-full h-full" x-show="messages.length === 0">
+                                                        <div class="w-full">
+                                                            <div class="mt-6">
+                                                                <h1 class="text-5xl font-bold">Hello, AGI 👋🏽</h1>
+                                                            </div>
+                                                            <div
+                                                                class="flex flex-col justify-center items-center gap-4 mb-8">
+                                                                <img src="/static/images/Vector.png" alt="">
+                                                                <h2 class="text-2xl font-medium">Ask Mura your
+                                                                    health-related questions 😊</h2>
+                                                            </div>
+                                                            <div class="flex flex-row flex-wrap justify-between gap-6">
+                                                                {% for item in items %}
+                                                                <div
+                                                                    class="flex flex-col gap-2 card flex-1 bg-base-100 shadow-xl">
+                                                                    <div class="card-body">
+                                                                        <h2 class="card-title">{{ item['title'] }}</h2>
+                                                                        <p>{{ item['description'] }}</p>
+                                                                    </div>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                            <div class="flex flex-row flex-wrap w-full py-8 gap-4">
+                                                                <div class="flex flex-col gap-6 flex-1">
+                                                                    <div
+                                                                        class="p-4 bg-primary text-primary-content rounded-lg">
+                                                                        <h1 class="text-xl mb-2">Symptom Checker</h1>
+                                                                        <p>Input symptoms and receive insights on
+                                                                            possible conditions.</p>
+                                                                    </div>
+                                                                    <div
+                                                                        class="p-4 bg-primary text-primary-content rounded-lg">
+                                                                        <h1 class="text-xl mb-2">Mental Wellness Support
+                                                                        </h1>
+                                                                        <p>Easy-to-follow mental health exercises and
+                                                                            stress-relief tips</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="p-4 bg-primary text-primary-content rounded-lg md:w-1/3">
+                                                                    <h1 class="text-xl mb-2">Daily Tips</h1>
+                                                                    <p>Customize your daily nuggets of wellness advice
+                                                                        with personalized
+                                                                        notifications
+                                                                        and
+                                                                        timely reminders.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="inputContainer"
+                    class="w-full pt-2 md:pt-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:w-[calc(100%-.5rem)]">
+                    <div
+                        class="stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
+                        <div class="relative flex h-full flex-1 items-stretch md:flex-col">
+                            <div class="flex w-full items-center">
+                                <div
+                                    class="overflow-hidden flex flex-col w-full flex-grow relative border border-token-border-heavy border-black rounded-2xl">
+                                    <input x-ref="input" type="text" placeholder="Say something..." autocomplete="off"
+                                        @keydown.enter="updateChat($event.target)"
+                                        class="m-0 w-full resize-none border-0 bg-transparent py-[10px] pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:py-3.5 md:pr-12 placeholder-black/50 pl-3 md:pl-4"
+                                        style="max-height: 200px; height: 52px; overflow-y: hidden;" />
+                                    <button @click.prevent="updateChat($refs.input)"
+                                        class="absolute md:bottom-3 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 dark:disabled:bg-white disabled:bg-black disabled:opacity-10 disabled:text-gray-400 enabled:bg-black text-white p-0.5 border border-black rounded-lg dark:border-white dark:bg-white bottom-1.5 transition-colors">
+                                        <span> <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
+                                                </path>
+                                            </svg></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative px-2 py-2 text-center text-base text-gray-800 md:px-[60px]">
+                        MuraAI can make mistakes, kindly cross check important
+                        information.</span>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </div>
+<script>
+    function adjustHeight() {
+        const element1 = document.getElementById('inputContainer');
+        const element2 = document.getElementById('messagesContainer');
+        const bottomPosition = element1.getBoundingClientRect().top;
+        element2.style.height = bottomPosition + 'px';
+    }
+    adjustHeight();
+    window.addEventListener('resize', adjustHeight);
+</script>
 {% endblock %}

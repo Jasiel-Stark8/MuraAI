@@ -33,88 +33,12 @@ function chatBot() {
           } else {
             this.lastIdx = null;
           }
+          this.scrollChat();
         },
         (error) => {
           this.lastIdx = null;
         }
       );
-    },
-    compare: function (promptsArray, repliesArray, string) {
-      let reply;
-      let replyFound = false;
-      for (let x = 0; x < promptsArray.length; x++) {
-        for (let y = 0; y < promptsArray[x].length; y++) {
-          if (promptsArray[x][y] === string) {
-            let replies = repliesArray[x];
-            reply = replies[Math.floor(Math.random() * replies.length)];
-            replyFound = true;
-            // Stop inner loop when input value matches this.prompts
-            break;
-          }
-        }
-        if (replyFound) {
-          // Stop outer loop when reply is found instead of interating through the entire array
-          break;
-        }
-      }
-      if (!reply) {
-        for (let x = 0; x < promptsArray.length; x++) {
-          for (let y = 0; y < promptsArray[x].length; y++) {
-            if (this.levenshtein(promptsArray[x][y], string) >= 0.75) {
-              let replies = repliesArray[x];
-              reply = replies[Math.floor(Math.random() * replies.length)];
-              replyFound = true;
-              // Stop inner loop when input value matches this.prompts
-              break;
-            }
-          }
-          if (replyFound) {
-            // Stop outer loop when reply is found instead of interating through the entire array
-            break;
-          }
-        }
-      }
-      return reply;
-    },
-    levenshtein: function (s1, s2) {
-      var longer = s1;
-      var shorter = s2;
-      if (s1.length < s2.length) {
-        longer = s2;
-        shorter = s1;
-      }
-      var longerLength = longer.length;
-      if (longerLength == 0) {
-        return 1.0;
-      }
-      return (
-        (longerLength - this.editDistance(longer, shorter)) /
-        parseFloat(longerLength)
-      );
-    },
-    editDistance: function (s1, s2) {
-      s1 = s1.toLowerCase();
-      s2 = s2.toLowerCase();
-
-      var costs = new Array();
-      for (var i = 0; i <= s1.length; i++) {
-        var lastValue = i;
-        for (var j = 0; j <= s2.length; j++) {
-          if (i == 0) costs[j] = j;
-          else {
-            if (j > 0) {
-              var newValue = costs[j - 1];
-              if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                newValue =
-                  Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-              costs[j - 1] = lastValue;
-              lastValue = newValue;
-            }
-          }
-        }
-        if (i > 0) costs[s2.length] = lastValue;
-      }
-      return costs[s2.length];
     },
     sendPromptRequest: async function (prompt, onType, onError) {
       try {
@@ -142,7 +66,7 @@ function chatBot() {
       }
     },
     scrollChat: function () {
-      const messagesContainer = document.getElementById("messages");
+      const messagesContainer = document.getElementById("messagesContainer");
       messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
       setTimeout(() => {

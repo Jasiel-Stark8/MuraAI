@@ -2002,6 +2002,10 @@ html {
   margin: 0px;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -2084,6 +2088,10 @@ html {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mr-12 {
+  margin-right: 3rem;
 }
 
 .line-clamp-1 {
@@ -2299,6 +2307,10 @@ html {
   resize: none;
 }
 
+.resize {
+  resize: both;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -2427,12 +2439,20 @@ html {
   overflow-x: hidden;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .overflow-y-clip {
   overflow-y: clip;
 }
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
 }
 
 .text-ellipsis {
@@ -2510,6 +2530,10 @@ html {
 
 .border-t-2 {
   border-top-width: 2px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-gray-200 {
@@ -2601,6 +2625,11 @@ html {
 
 .bg-white\/95 {
   background-color: rgb(255 255 255 / 0.95);
+}
+
+.bg-base-300 {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
 }
 
 .bg-gradient-to-l {
@@ -2785,6 +2814,14 @@ html {
 
 .pt-3\.5 {
   padding-top: 0.875rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
 }
 
 .text-left {
@@ -2988,6 +3025,11 @@ html {
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
+.text-primary {
+  --tw-text-opacity: 1;
+  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -3145,6 +3187,10 @@ html {
 
 .hover\:underline:hover {
   text-decoration-line: underline;
+}
+
+.focus\:scroll-auto:focus {
+  scroll-behavior: auto;
 }
 
 .focus\:border-blue-500:focus {
@@ -3364,8 +3410,25 @@ html {
     margin-right: 1rem;
   }
 
+  .md\:my-4 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
   .md\:w-\[calc\(100\%-\.5rem\)\] {
     width: calc(100% - .5rem);
+  }
+
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+
+  .md\:w-1\/3 {
+    width: 33.333333%;
   }
 
   .md\:max-w-3xl {
@@ -3422,6 +3485,10 @@ html {
 
   .md\:pr-12 {
     padding-right: 3rem;
+  }
+
+  .md\:pr-4 {
+    padding-right: 1rem;
   }
 
   .md\:last\:mb-6:last-child {
