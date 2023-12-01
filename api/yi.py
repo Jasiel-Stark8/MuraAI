@@ -18,7 +18,6 @@ user_conversations = {}
 def generate_response_function(session_id,prompt):
     conversation_history = user_conversations.get(session_id, [])
     newPrompt = "\n".join(conversation_history + [f"user\n{prompt}\nassistant"])
-    print(conversation_history)
     output = replicate.run(
             "01-ai/yi-6b-chat:14efadfaf772f45ee74c14973007cbafab3ccac90169ec96a9fc7a804253535d",
             input={
